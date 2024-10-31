@@ -77,8 +77,7 @@ ai-commit은 Gemini AI를 활용하여 git 커밋 메시지를 자동으로 생�
 
 ### Installation
 
-<details>
-<summary><b>Linux/Ubuntu</b></summary>
+**Linux/Ubuntu**
 
 ```bash
 # 1. Go 설치
@@ -92,10 +91,7 @@ source ~/.bashrc
 go install github.com/in-jun/ai-commit@latest
 ```
 
-</details>
-
-<details>
-<summary><b>macOS</b></summary>
+**macOS**
 
 ```bash
 # 1. Go 설치
@@ -109,19 +105,12 @@ source ~/.zshrc
 go install github.com/in-jun/ai-commit@latest
 ```
 
-</details>
-
 ### API Key Setup
-
-<details>
-<summary><b>API 키 발급 과정</b></summary>
 
 1. [Google AI Studio](https://aistudio.google.com/app/apikey) 접속
 2. Google 계정으로 로그인
 3. 'API 키 관리' → '새 API 키 만들기' 클릭
 4. 생성된 API 키 복사
-
-</details>
 
 ---
 
@@ -156,8 +145,7 @@ ai-commit
 
 ### Examples
 
-<details>
-<summary><b>기능 추가 예시</b></summary>
+**기능 추가 예시**
 
 ```bash
 $ git add feature.go
@@ -174,10 +162,7 @@ JWT 기반 인증 시스템 추가
 Do you want to commit with this message? [Y/n]:
 ```
 
-</details>
-
-<details>
-<summary><b>버그 수정 예시</b></summary>
+**버그 수정 예시**
 
 ```bash
 $ git add bug-fix.go
@@ -193,8 +178,6 @@ fix: 메모리 누수 문제 해결
 
 Do you want to commit with this message? [Y/n]:
 ```
-
-</details>
 
 ### Configuration
 
@@ -235,49 +218,10 @@ templates:
 
 ### Best Practices
 
-<table>
-<tr>
-<th>실천 사항</th>
-<th>설명</th>
-<th>예시</th>
-</tr>
-<tr>
-<td>작은 단위로 커밋</td>
-<td>
-• 하나의 논리적 변경사항만 포함<br>
-• 관련 없는 변경사항은 분리
-</td>
-<td>
-
-```bash
-# 좋은 예
-git add auth/
-ai-commit
-
-# 나쁜 예
-git add .  # 여러 기능 변경
-```
-
-</td>
-</tr>
-<tr>
-<td>메시지 검토</td>
-<td>
-• 자동 생성된 메시지 검증<br>
-• 필요시 수정 및 보완
-</td>
-<td>
-
-```bash
-# 메시지 검토 후 수정
-Do you want to commit with
-this message? [Y/n]: n
-# 에디터에서 수정
-```
-
-</td>
-</tr>
-</table>
+| 실천 사항        | 설명                                                           | 예시                                                                        |
+| ---------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 작은 단위로 커밋 | • 하나의 논리적 변경사항만 포함<br>• 관련 없는 변경사항은 분리 | `bash# 좋은 예git add auth/ai-commit# 나쁜 예git add .  # 여러 기능 변경`   |
+| 메시지 검토      | • 자동 생성된 메시지 검증                                      | `bash# 메시지 검토 후 수정Do you want to commit withthis message? [Y/n]: n` |
 
 ### Templates
 
@@ -295,8 +239,7 @@ this message? [Y/n]: n
 
 ### Customization
 
-<details>
-<summary><b>커스텀 템플릿 예시</b></summary>
+커스텀 템플릿 예시:
 
 ```yaml
 templates:
@@ -308,16 +251,11 @@ templates:
       description: "긴급 수정"
 ```
 
-</details>
-
 ---
 
 ## 🔍 Troubleshooting
 
 ### command not found: ai-commit
-
-<details>
-<summary><b>해결 방법</b></summary>
 
 1. Go 설치 확인
 
@@ -349,12 +287,7 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-</details>
-
 ### API 키 오류
-
-<details>
-<summary><b>해결 방법</b></summary>
 
 1. 환경 변수 확인
 
@@ -374,35 +307,24 @@ cat ~/.ai-commit/config.yaml
 ai-commit init
 ```
 
-</details>
-
 ---
 
 ## 💡 FAQs
 
-<details>
-<summary><b>Q: API 키는 어디서 얻나요?</b></summary>
+**Q: API 키는 어디서 얻나요?**
 
 -   [Google AI Studio](https://aistudio.google.com/app/apikey)에서 발급
 -   무료로 사용 가능
 -   일일 요청 제한 있음
 
-</details>
-
-<details>
-<summary><b>Q: 오프라인에서도 사용 가능한가요?</b></summary>
+**Q: 오프라인에서도 사용 가능한가요?**
 
 -   현재 버전은 Gemini API 연결 필요
 -   오프라인 모드는 향후 지원 예정
 
-</details>
-
-<details>
-<summary><b>Q: 다른 언어는 지원하나요?</b></summary>
+**Q: 다른 언어는 지원하나요?**
 
 -   프로젝트의 커밋 히스토리 기반으로 언어 자동 선택
-
-</details>
 
 ---
 
