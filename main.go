@@ -16,7 +16,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const Version = "1.0.0"
+const Version = "1.1.0"
 
 type Config struct {
 	ApiKey       string     `yaml:"api_key"`
@@ -377,20 +377,91 @@ func NewCLI(config *Config) *CLI {
 	return &CLI{config: config}
 }
 
-func (cli *CLI) confirmCommit(message string) bool {
-	fmt.Println("\n" + colorize("=== Generated Commit Message ===", colorBlue, cli.config))
-	fmt.Printf("%s\n\n", colorize(message, colorGreen, cli.config))
+func (cli *CLI) getCommitAction(message string) (string, error) {
+	for {
+		fmt.Println("\n" + colorize("=== Generated Commit Message ===", colorBlue, cli.config))
+		fmt.Printf("%s\n\n", colorize(message, colorGreen, cli.config))
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print(colorize("Do you want to commit with this message? [Y/n]: ", colorCyan, cli.config))
+		fmt.Println(colorize("What would you like to do?", colorCyan, cli.config))
+		fmt.Println(colorize("[Y]es: ", colorGreen, cli.config) + "Commit with this message")
+		fmt.Println(colorize("[E]dit: ", colorYellow, cli.config) + "Edit the message")
+		fmt.Println(colorize("[N]o: ", colorRed, cli.config) + "Cancel commit")
+		fmt.Print(colorize("Choice [Y/e/n]: ", colorCyan, cli.config))
 
-	input, err := reader.ReadString('\n')
+		reader := bufio.NewReader(os.Stdin)
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			return "", err
+		}
+
+		input = strings.ToLower(strings.TrimSpace(input))
+		switch input {
+		case "", "y", "yes":
+			return message, nil
+		case "e", "edit":
+			return cli.editMessage(message)
+		case "n", "no":
+			return "", nil
+		default:
+			fmt.Println(colorize("Invalid choice. Please try again.", colorRed, cli.config))
+		}
+	}
+}
+
+func (cli *CLI) editMessage(originalMessage string) (string, error) {
+	tmpfile, err := os.CreateTemp("", "commit-msg-*.txt")
 	if err != nil {
-		return false
+		return "", fmt.Errorf("failed to create temporary file: %v", err)
+	}
+	defer os.Remove(tmpfile.Name())
+
+	if _, err := tmpfile.WriteString(originalMessage); err != nil {
+		return "", fmt.Errorf("failed to write to temporary file: %v", err)
+	}
+	tmpfile.Close()
+
+	editor := os.Getenv("VISUAL")
+	if editor == "" {
+		editor = os.Getenv("EDITOR")
+	}
+	if editor == "" {
+		cmd := exec.Command("git", "config", "--get", "core.editor")
+		if output, err := cmd.Output(); err == nil {
+			editor = strings.TrimSpace(string(output))
+		}
+	}
+	if editor == "" {
+		for _, ed := range []string{"vim", "nano", "vi"} {
+			if _, err := exec.LookPath(ed); err == nil {
+				editor = ed
+				break
+			}
+		}
+	}
+	if editor == "" {
+		return "", fmt.Errorf("no text editor found. Please set EDITOR environment variable")
 	}
 
-	input = strings.ToLower(strings.TrimSpace(input))
-	return input == "" || input == "y" || input == "yes"
+	cmd := exec.Command(editor, tmpfile.Name())
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("failed to run editor: %v", err)
+	}
+
+	content, err := os.ReadFile(tmpfile.Name())
+	if err != nil {
+		return "", fmt.Errorf("failed to read edited message: %v", err)
+	}
+
+	editedMessage := strings.TrimSpace(string(content))
+	if editedMessage == "" {
+		return "", fmt.Errorf("commit message cannot be empty")
+	}
+
+	return editedMessage, nil
 }
 
 func main() {
@@ -451,12 +522,17 @@ func run() error {
 	}
 
 	cli := NewCLI(configManager.config)
-	if !cli.confirmCommit(message) {
+	finalMessage, err := cli.getCommitAction(message)
+	if err != nil {
+		return fmt.Errorf("failed to process commit action: %v", err)
+	}
+
+	if finalMessage == "" {
 		fmt.Println(colorize("Commit cancelled", colorYellow, configManager.config))
 		return nil
 	}
 
-	if err := gitOps.commitChanges(message); err != nil {
+	if err := gitOps.commitChanges(finalMessage); err != nil {
 		return err
 	}
 
