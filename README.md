@@ -108,7 +108,7 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.zshrc
 source ~/.zshrc
 
 # 3. ai-commit 설치
-go install github.com/in-jun/ai-commit
+go install github.com/in-jun/ai-commit@latest
 ```
 
 ### API Key Setup
