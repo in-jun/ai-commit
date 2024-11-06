@@ -75,13 +75,57 @@ ai-commit은 Gemini AI를 활용하여 git 커밋 메시지를 자동으로 생�
 
 시작하기 전에 다음 요구사항을 확인하세요:
 
-| 요구사항      | 최소 버전 | 설치 방법                              |
-| ------------- | --------- | -------------------------------------- |
-| Go            | 1.21+     | [공식 사이트](https://go.dev/dl/)      |
-| Git           | 2.0+      | `apt install git` / `brew install git` |
-| Gemini API 키 | -         | [발급 방법](#api-key-setup)            |
+| 요구사항      | 최소 버전 | 설치 방법                                    |
+| ------------- | --------- | -------------------------------------------- |
+| Go            | 1.21+     | [공식 사이트](https://go.dev/dl/)            |
+| Git           | 2.0+      | [공식 사이트](https://git-scm.com/downloads) |
+| Gemini API 키 | -         | [발급 방법](#api-key-setup)                  |
 
 ### Installation
+
+**Windows**
+
+1. Go 설치
+
+```powershell
+# 1. Go 설치 파일 다운로드
+# https://go.dev/dl/ 에서 Windows MSI 설치 파일 다운로드
+
+# 2. 설치 파일 실행 후 기본 옵션으로 설치
+
+# 3. PowerShell 또는 명령 프롬프트를 새로 열어 설치 확인
+go version
+```
+
+2. Git 설치
+
+```powershell
+# 1. Git 설치 파일 다운로드
+# https://git-scm.com/download/windows 에서 다운로드
+
+# 2. 설치 파일 실행 후 기본 옵션으로 설치
+
+# 3. PowerShell 또는 명령 프롬프트를 새로 열어 설치 확인
+git --version
+```
+
+3. PATH 설정
+
+```powershell
+# PowerShell 관리자 권한으로 실행
+$env:Path += ";$env:USERPROFILE\go\bin"
+[Environment]::SetEnvironmentVariable(
+    "Path",
+    [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::User) + ";$env:USERPROFILE\go\bin",
+    [EnvironmentVariableTarget]::User
+)
+```
+
+4. ai-commit 설치
+
+```powershell
+go install github.com/in-jun/ai-commit@latest
+```
 
 **Linux/Ubuntu**
 
@@ -138,6 +182,11 @@ graph LR
 
 ```bash
 # 방법 1: 환경 변수
+# Windows (PowerShell)
+$env:API_KEY="your-gemini-api-key"
+ai-commit
+
+# Linux/macOS
 API_KEY="your-gemini-api-key" ai-commit
 
 # 방법 2: 설정 파일
@@ -220,7 +269,10 @@ Choice [Y/e/n]: e
 
 ### Configuration
 
-설정 파일: `~/.ai-commit/config.yaml`
+설정 파일 위치:
+
+-   Windows: `%USERPROFILE%\.ai-commit\config.yaml`
+-   Linux/macOS: `~/.ai-commit/config.yaml`
 
 ```yaml
 # API 설정
@@ -300,7 +352,9 @@ templates:
 
 ## 🔍 Troubleshooting
 
-### command not found: ai-commit
+### 공통 문제
+
+**command not found: ai-commit**
 
 1. Go 설치 확인
 
@@ -311,16 +365,69 @@ go version
 2. PATH 설정 확인
 
 ```bash
+# Windows (PowerShell)
+echo $env:Path
+
+# Linux/macOS
 echo $PATH | grep go
 ```
 
 3. Go bin 디렉토리 확인
 
 ```bash
+# Windows
+dir %USERPROFILE%\go\bin
+
+# Linux/macOS
 ls ~/go/bin
 ```
 
-4. PATH 재설정
+### Windows 특정 문제
+
+1. `go install` 실패 시
+
+```powershell
+# Go 환경 변수 확인
+go env GOPATH
+go env GOBIN
+
+# Go 모듈 캐시 정리
+go clean -modcache
+```
+
+2. PATH 설정 문제
+
+```powershell
+# 현재 PATH 확인
+echo $env:Path
+
+# 사용자 환경 변수에서 수동으로 추가
+# 제어판 > 시스템 > 고급 시스템 설정 > 환경 변수
+# 사용자 변수의 Path에 %USERPROFILE%\go\bin 추가
+```
+
+3. Git Bash 사용 시
+
+```bash
+# ~/.bashrc 파일 생성 또는 편집
+echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+4. 권한 문제
+
+```powershell
+# PowerShell을 관리자 권한으로 실행
+# 실행 정책 확인
+Get-ExecutionPolicy
+
+# 필요시 실행 정책 변경
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Linux/macOS 특정 문제
+
+1. PATH 재설정
 
 ```bash
 # Linux
@@ -332,17 +439,35 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### API 키 오류
+2. 권한 문제
+
+```bash
+# 실행 권한 확인
+ls -l ~/go/bin/ai-commit
+
+# 권한 부여
+chmod +x ~/go/bin/ai-commit
+```
+
+### API 키 문제
 
 1. 환경 변수 확인
 
 ```bash
+# Windows (PowerShell)
+echo $env:API_KEY
+
+# Linux/macOS
 echo $API_KEY
 ```
 
 2. 설정 파일 확인
 
 ```bash
+# Windows
+type %USERPROFILE%\.ai-commit\config.yaml
+
+# Linux/macOS
 cat ~/.ai-commit/config.yaml
 ```
 
@@ -370,13 +495,45 @@ ai-commit init
 **Q: 다른 언어는 지원하나요?**
 
 -   프로젝트의 커밋 히스토리 기반으로 언어 자동 선택
+-   영어/한국어 기본 지원
 
 **Q: 어떤 에디터로 메시지를 편집할 수 있나요?**
 
--   시스템의 기본 에디터(VISUAL/EDITOR 환경변수) 사용
--   Git core.editor 설정 사용
--   vim, nano 등 설치된 에디터 자동 감지
--   환경변수로 선호하는 에디터 지정 가능
+Windows:
+
+-   기본 메모장
+-   Visual Studio Code
+-   Notepad++
+-   Git 설치 시 설정된 기본 에디터
+
+Linux/macOS:
+
+-   vim
+-   nano
+-   Visual Studio Code
+-   시스템의 기본 에디터(VISUAL/EDITOR 환경변수)
+
+설정 방법:
+
+```bash
+# Windows (PowerShell)
+$env:EDITOR="code --wait"
+
+# Linux/macOS
+export EDITOR="vim"
+```
+
+**Q: 커밋 메시지 형식을 커스터마이즈할 수 있나요?**
+
+-   설정 파일에서 템플릿 수정 가능
+-   기업/팀 커밋 컨벤션에 맞춰 조정 가능
+-   커스텀 prefix와 description 추가 가능
+
+**Q: 대규모 변경사항도 처리 가능한가요?**
+
+-   기본적으로 10,000바이트까지의 diff 처리
+-   설정에서 `max_diff_size` 조정 가능
+-   대규모 변경은 작은 단위로 나누어 커밋 권장
 
 ---
 
