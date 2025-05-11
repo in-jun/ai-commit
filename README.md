@@ -13,22 +13,22 @@
 
 ## 📋 목차
 
--   [Features](#-features)
--   [Getting Started](#-getting-started)
-    -   [Prerequisites](#prerequisites)
-    -   [Installation](#installation)
-    -   [API Key Setup](#api-key-setup)
--   [Usage](#-usage)
-    -   [Quick Start](#quick-start)
-    -   [Examples](#examples)
-    -   [Configuration](#configuration)
-    -   [Commands](#commands)
--   [Advanced](#-advanced)
-    -   [Best Practices](#best-practices)
-    -   [Templates](#templates)
-    -   [Customization](#customization)
--   [Troubleshooting](#-troubleshooting)
--   [FAQs](#-faqs)
+- [Features](#-features)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [API Key Setup](#api-key-setup)
+- [Usage](#-usage)
+  - [Quick Start](#quick-start)
+  - [Examples](#examples)
+  - [Configuration](#configuration)
+  - [Commands](#commands)
+- [Advanced](#-advanced)
+  - [Best Practices](#best-practices)
+  - [Templates](#templates)
+  - [Customization](#customization)
+- [Troubleshooting](#-troubleshooting)
+- [FAQs](#-faqs)
 
 ---
 
@@ -38,34 +38,34 @@ ai-commit은 Gemini AI를 활용하여 git 커밋 메시지를 자동으로 생�
 
 ### 핵심 기능
 
--   🎯 **스마트 분석**
+- 🎯 **스마트 분석**
 
-    -   스테이징된 변경사항 자동 분석
-    -   프로젝트 컨텍스트 이해
-    -   이전 커밋 스타일 학습
+  - 스테이징된 변경사항 자동 분석
+  - 프로젝트 컨텍스트 이해
+  - 이전 커밋 스타일 학습
 
--   🤖 **AI 기반 생성**
+- 🤖 **AI 기반 생성**
 
-    -   Conventional Commits 형식 준수
-    -   멀티 라인 설명 자동 생성
-    -   변경 사항에 대한 상세한 설명
+  - Conventional Commits 형식 준수
+  - 멀티 라인 설명 자동 생성
+  - 변경 사항에 대한 상세한 설명
 
--   ✏️ **메시지 편집**
+- ✏️ **메시지 편집**
 
-    -   생성된 메시지 검토 및 수정
-    -   선호하는 텍스트 에디터 사용
-    -   커밋 전 완벽한 메시지 조정
+  - 생성된 메시지 검토 및 수정
+  - 선호하는 텍스트 에디터 사용
+  - 커밋 전 완벽한 메시지 조정
 
--   📝 **커스터마이징**
+- 📝 **커스터마이징**
 
-    -   템플릿 기반 커밋 타입
-    -   다국어 지원
-    -   설정 가능한 옵션들
+  - 템플릿 기반 커밋 타입
+  - 다국어 지원
+  - 설정 가능한 옵션들
 
--   ⚡️ **개발자 경험**
-    -   간단한 CLI 인터페이스
-    -   빠른 설치와 설정
-    -   직관적인 사용법
+- ⚡️ **개발자 경험**
+  - 간단한 CLI 인터페이스
+  - 빠른 설치와 설정
+  - 직관적인 사용법
 
 ---
 
@@ -271,8 +271,8 @@ Choice [Y/e/n]: e
 
 설정 파일 위치:
 
--   Windows: `%USERPROFILE%\.ai-commit\config.yaml`
--   Linux/macOS: `~/.ai-commit/config.yaml`
+- Windows: `%USERPROFILE%\.ai-commit\config.yaml`
+- Linux/macOS: `~/.ai-commit/config.yaml`
 
 ```yaml
 # API 설정
@@ -287,11 +287,11 @@ color_enabled: true # 컬러 출력 활성화
 
 # 커밋 템플릿
 templates:
-    - prefix: "feat" # 새 기능
-      description: "새로운 기능 추가"
-    - prefix: "fix" # 버그 수정
-      description: "버그 수정"
-    # ... 추가 템플릿
+  - prefix: "feat" # 새 기능
+    description: "새로운 기능 추가"
+  - prefix: "fix" # 버그 수정
+    description: "버그 수정"
+  # ... 추가 템플릿
 ```
 
 ### Commands
@@ -340,12 +340,12 @@ templates:
 
 ```yaml
 templates:
-    - prefix: "feature"
-      description: "새로운 기능 개발"
-    - prefix: "bugfix"
-      description: "버그 수정"
-    - prefix: "hotfix"
-      description: "긴급 수정"
+  - prefix: "feature"
+    description: "새로운 기능 개발"
+  - prefix: "bugfix"
+    description: "버그 수정"
+  - prefix: "hotfix"
+    description: "긴급 수정"
 ```
 
 ---
@@ -483,35 +483,35 @@ ai-commit init
 
 **Q: API 키는 어디서 얻나요?**
 
--   [Google AI Studio](https://aistudio.google.com/app/apikey)에서 발급
--   무료로 사용 가능
--   일일 요청 제한 있음
+- [Google AI Studio](https://aistudio.google.com/app/apikey)에서 발급
+- 무료로 사용 가능
+- 일일 요청 제한 있음
 
 **Q: 오프라인에서도 사용 가능한가요?**
 
--   현재 버전은 Gemini API 연결 필요
--   오프라인 모드는 향후 지원 예정
+- 현재 버전은 Gemini API 연결 필요
+- 오프라인 모드는 향후 지원 예정
 
 **Q: 다른 언어는 지원하나요?**
 
--   프로젝트의 커밋 히스토리 기반으로 언어 자동 선택
--   영어/한국어 기본 지원
+- 프로젝트의 커밋 히스토리 기반으로 언어 자동 선택
+- 영어/한국어 기본 지원
 
 **Q: 어떤 에디터로 메시지를 편집할 수 있나요?**
 
 Windows:
 
--   기본 메모장
--   Visual Studio Code
--   Notepad++
--   Git 설치 시 설정된 기본 에디터
+- 기본 메모장
+- Visual Studio Code
+- Notepad++
+- Git 설치 시 설정된 기본 에디터
 
 Linux/macOS:
 
--   vim
--   nano
--   Visual Studio Code
--   시스템의 기본 에디터(VISUAL/EDITOR 환경변수)
+- vim
+- nano
+- Visual Studio Code
+- 시스템의 기본 에디터(VISUAL/EDITOR 환경변수)
 
 설정 방법:
 
@@ -525,15 +525,15 @@ export EDITOR="vim"
 
 **Q: 커밋 메시지 형식을 커스터마이즈할 수 있나요?**
 
--   설정 파일에서 템플릿 수정 가능
--   기업/팀 커밋 컨벤션에 맞춰 조정 가능
--   커스텀 prefix와 description 추가 가능
+- 설정 파일에서 템플릿 수정 가능
+- 기업/팀 커밋 컨벤션에 맞춰 조정 가능
+- 커스텀 prefix와 description 추가 가능
 
 **Q: 대규모 변경사항도 처리 가능한가요?**
 
--   기본적으로 10,000바이트까지의 diff 처리
--   설정에서 `max_diff_size` 조정 가능
--   대규모 변경은 작은 단위로 나누어 커밋 권장
+- 기본적으로 10,000바이트까지의 diff 처리
+- 설정에서 `max_diff_size` 조정 가능
+- 대규모 변경은 작은 단위로 나누어 커밋 권장
 
 ---
 
