@@ -16,12 +16,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const Version = "1.1.0"
+const Version = "1.2.0"
 
 type Config struct {
 	ApiKey       string     `yaml:"api_key"`
 	MaxDiffSize  int        `yaml:"max_diff_size"`
 	HistoryDepth int        `yaml:"history_depth"`
+	Model        string     `yaml:"model"`
 	Templates    []Template `yaml:"templates"`
 	ColorEnabled bool       `yaml:"color_enabled"`
 }
@@ -163,6 +164,7 @@ func NewConfigManager() (*ConfigManager, error) {
 	config := &Config{
 		MaxDiffSize:  10000,
 		HistoryDepth: 5,
+		Model:        "gemini-1.5-flash",
 		ColorEnabled: true,
 		Templates: []Template{
 			{Prefix: "feat", Description: "Add new feature"},
@@ -199,6 +201,10 @@ func (cm *ConfigManager) Load() error {
 
 	if err := yaml.Unmarshal(data, cm.config); err != nil {
 		return fmt.Errorf("failed to parse config file: %v", err)
+	}
+
+	if cm.config.Model == "" {
+		cm.config.Model = "gemini-1.5-flash"
 	}
 
 	return cm.Validate()
@@ -262,7 +268,7 @@ func (g *CommitMessageGenerator) Generate(ctx context.Context, diff string, hist
 	stopSpinner := printWithSpinner("Generating commit message...")
 	defer stopSpinner()
 
-	model := g.client.GenerativeModel("gemini-1.5-pro")
+	model := g.client.GenerativeModel(g.config.Model)
 	model.SetTemperature(0.7)
 
 	templateInfo := make([]string, len(g.config.Templates))

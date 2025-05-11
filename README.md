@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/in-jun/ai-commit)](https://goreportcard.com/report/github.com/in-jun/ai-commit)
 
 > 🤖 AI 기반 git 커밋 메시지 생성 도구
@@ -27,6 +27,7 @@
   - [Best Practices](#best-practices)
   - [Templates](#templates)
   - [Customization](#customization)
+  - [Model Selection](#model-selection)
 - [Troubleshooting](#-troubleshooting)
 - [FAQs](#-faqs)
 
@@ -49,6 +50,7 @@ ai-commit은 Gemini AI를 활용하여 git 커밋 메시지를 자동으로 생�
   - Conventional Commits 형식 준수
   - 멀티 라인 설명 자동 생성
   - 변경 사항에 대한 상세한 설명
+  - 다양한 Gemini 모델 지원 (1.5 Flash, 1.5 Pro 등)
 
 - ✏️ **메시지 편집**
 
@@ -61,6 +63,7 @@ ai-commit은 Gemini AI를 활용하여 git 커밋 메시지를 자동으로 생�
   - 템플릿 기반 커밋 타입
   - 다국어 지원
   - 설정 가능한 옵션들
+  - AI 모델 선택 가능
 
 - ⚡️ **개발자 경험**
   - 간단한 CLI 인터페이스
@@ -278,6 +281,9 @@ Choice [Y/e/n]: e
 # API 설정
 api_key: "your-api-key"
 
+# AI 모델 설정
+model: "gemini-1.5-flash" # 기본값: gemini-1.5-flash
+
 # 성능 설정
 max_diff_size: 10000 # 최대 diff 크기 (바이트)
 history_depth: 5 # 분석할 이전 커밋 수
@@ -347,6 +353,43 @@ templates:
   - prefix: "hotfix"
     description: "긴급 수정"
 ```
+
+### Model Selection
+
+v1.2.0부터 사용할 Gemini 모델을 선택할 수 있습니다:
+
+#### 지원 모델
+
+| 모델                  | 특징                     | 권장 사용 케이스              |
+| --------------------- | ------------------------ | ----------------------------- |
+| gemini-1.5-flash      | 빠른 응답, 균형잡힌 성능 | 일반적인 커밋 메시지 생성     |
+| gemini-1.5-pro        | 높은 정확도, 복잡한 분석 | 대규모 변경사항 또는 리팩토링 |
+| gemini-2.0-flash      | 최신 모델, 향상된 성능   | 최신 AI 기능이 필요한 경우    |
+| gemini-2.0-flash-lite | 가장 빠른 응답           | 간단한 변경사항, 빠른 피드백  |
+
+#### 모델 설정 방법
+
+1. **설정 파일 수정**
+
+```yaml
+# ~/.ai-commit/config.yaml
+model: "gemini-1.5-pro" # 원하는 모델명 입력
+```
+
+2. **환경 변수 사용** (향후 지원 예정)
+
+```bash
+AI_COMMIT_MODEL="gemini-1.5-pro" ai-commit
+```
+
+#### 모델별 성능 비교
+
+| 모델                  | 속도     | 정확도     | 비용 | 무료 한도 (일일) |
+| --------------------- | -------- | ---------- | ---- | ---------------- |
+| gemini-1.5-flash      | ⚡⚡⚡   | ⭐⭐⭐     | 무료 | 1,500 요청       |
+| gemini-1.5-pro        | ⚡       | ⭐⭐⭐⭐⭐ | 무료 | 50 요청          |
+| gemini-2.0-flash      | ⚡⚡     | ⭐⭐⭐⭐   | 무료 | 1,500 요청       |
+| gemini-2.0-flash-lite | ⚡⚡⚡⚡ | ⭐⭐       | 무료 | 1,500 요청       |
 
 ---
 
@@ -486,6 +529,13 @@ ai-commit init
 - [Google AI Studio](https://aistudio.google.com/app/apikey)에서 발급
 - 무료로 사용 가능
 - 일일 요청 제한 있음
+
+**Q: 어떤 AI 모델을 사용해야 하나요?**
+
+- 일반적인 커밋: `gemini-1.5-flash` (기본값)
+- 복잡한 변경사항: `gemini-1.5-pro`
+- 빠른 응답 필요: `gemini-2.0-flash-lite`
+- 최신 기능: `gemini-2.0-flash`
 
 **Q: 오프라인에서도 사용 가능한가요?**
 
