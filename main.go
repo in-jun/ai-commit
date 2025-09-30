@@ -16,7 +16,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const Version = "1.2.0"
+const Version = "1.3.0"
 
 type Config struct {
 	ApiKey       string     `yaml:"api_key"`
@@ -164,7 +164,7 @@ func NewConfigManager() (*ConfigManager, error) {
 	config := &Config{
 		MaxDiffSize:  10000,
 		HistoryDepth: 5,
-		Model:        "gemini-1.5-flash",
+		Model:        "gemini-2.0-flash",
 		ColorEnabled: true,
 		Templates: []Template{
 			{Prefix: "feat", Description: "Add new feature"},
@@ -204,7 +204,7 @@ func (cm *ConfigManager) Load() error {
 	}
 
 	if cm.config.Model == "" {
-		cm.config.Model = "gemini-1.5-flash"
+		cm.config.Model = "gemini-2.0-flash"
 	}
 
 	return cm.Validate()
