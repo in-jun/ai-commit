@@ -1,6 +1,6 @@
 # ai-commit
 
-![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/in-jun/ai-commit)](https://goreportcard.com/report/github.com/in-jun/ai-commit)
 
 AI-powered Git commit message generator using Google Gemini. Analyzes staged changes, understands project context, and creates Conventional Commits-compliant messages.
@@ -60,7 +60,7 @@ Configure via `~/.ai-commit/config.yaml`:
 
 ```yaml
 api_key: "your-gemini-api-key"
-model: "gemini-1.5-flash" # Available: flash, pro, 2.0-flash, 2.0-flash-lite
+model: "gemini-2.0-flash" # Available: 2.0-flash, 2.0-flash-lite, 2.5-flash, 2.5-flash-lite
 max_diff_size: 10000 # Maximum diff size in bytes
 history_depth: 5 # Previous commits to analyze
 color_enabled: true # Colored output
@@ -106,15 +106,15 @@ Choose models based on your needs:
 
 | Model                   | Performance | Accuracy | Daily Limit | Use Case          |
 | ----------------------- | ----------- | -------- | ----------- | ----------------- |
-| `gemini-1.5-flash`      | ⚡⚡⚡      | ★★★      | 1,500       | Default, balanced |
-| `gemini-1.5-pro`        | ⚡          | ★★★★★    | 50          | Complex changes   |
-| `gemini-2.0-flash`      | ⚡⚡        | ★★★★     | 1,500       | Latest features   |
+| `gemini-2.0-flash`      | ⚡⚡⚡      | ★★★★     | 1,500       | Default, balanced |
 | `gemini-2.0-flash-lite` | ⚡⚡⚡⚡    | ★★       | 1,500       | Simple commits    |
+| `gemini-2.5-flash`      | ⚡⚡        | ★★★★★    | 1,500       | Latest, best      |
+| `gemini-2.5-flash-lite` | ⚡⚡⚡⚡    | ★★★      | 1,500       | Fast & efficient  |
 
 Update model in config:
 
 ```yaml
-model: "gemini-1.5-pro" # For complex analysis
+model: "gemini-2.5-flash" # For best accuracy
 ```
 
 ## Features
@@ -196,7 +196,7 @@ export API_KEY="your-key"
 ### Model Errors
 
 - Rate limit exceeded: Switch to `gemini-2.0-flash-lite` for higher limits
-- Complex changes failing: Use `gemini-1.5-pro` for better analysis
+- Complex changes failing: Use `gemini-2.5-flash` for better analysis
 - Timeout issues: Check network connection and API status
 
 ## Best Practices
