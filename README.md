@@ -1,6 +1,6 @@
 # ai-commit
 
-![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/in-jun/ai-commit)](https://goreportcard.com/report/github.com/in-jun/ai-commit)
 
 AI-powered Git commit message generator using Google Gemini. Analyzes staged changes, understands project context, and creates Conventional Commits-compliant messages.
