@@ -60,7 +60,7 @@ Configure via `~/.ai-commit/config.yaml`:
 
 ```yaml
 api_key: "your-gemini-api-key"
-model: "gemini-2.0-flash" # Available: 2.0-flash, 2.0-flash-lite, 2.5-flash, 2.5-flash-lite
+model: "gemini-flash-latest" # Available: gemini-flash-latest, gemini-2.5-flash, gemini-2.5-flash-lite
 max_diff_size: 10000 # Maximum diff size in bytes
 history_depth: 5 # Previous commits to analyze
 color_enabled: true # Colored output
@@ -104,23 +104,22 @@ ai-commit
 
 Choose models based on your needs:
 
-| Model                   | Performance | Accuracy | Daily Limit | Use Case          |
-| ----------------------- | ----------- | -------- | ----------- | ----------------- |
-| `gemini-2.0-flash`      | ⚡⚡⚡      | ★★★★     | 1,500       | Default, balanced |
-| `gemini-2.0-flash-lite` | ⚡⚡⚡⚡    | ★★       | 1,500       | Simple commits    |
-| `gemini-2.5-flash`      | ⚡⚡        | ★★★★★    | 1,500       | Latest, best      |
-| `gemini-2.5-flash-lite` | ⚡⚡⚡⚡    | ★★★      | 1,500       | Fast & efficient  |
+| Model                   | Performance | Accuracy | Daily Limit | Use Case                       |
+| ----------------------- | ----------- | -------- | ----------- | ------------------------------ |
+| `gemini-flash-latest`   | ⚡⚡⚡      | ★★★★★    | 250         | Default, auto-updates to latest |
+| `gemini-2.5-flash`      | ⚡⚡⚡      | ★★★★★    | 250         | Stable, best quality           |
+| `gemini-2.5-flash-lite` | ⚡⚡⚡⚡    | ★★★      | 1,000       | Fast & lightweight, high quota |
 
 Update model in config:
 
 ```yaml
-model: "gemini-2.5-flash" # For best accuracy
+model: "gemini-2.5-flash" # For stable, pinned version
 ```
 
 ## Features
 
 - **Context-aware**: Analyzes previous commits for consistent style
-- **Multi-model support**: Choose from 4 Gemini models
+- **Multi-model support**: Choose from multiple Gemini models
 - **Interactive editing**: Review and modify messages before committing
 - **Conventional Commits**: Follows industry standards
 - **Language detection**: Adapts to project's commit language
@@ -195,7 +194,7 @@ export API_KEY="your-key"
 
 ### Model Errors
 
-- Rate limit exceeded: Switch to `gemini-2.0-flash-lite` for higher limits
+- Rate limit exceeded: Switch to `gemini-2.5-flash-lite` for higher quota (1,000 RPD)
 - Complex changes failing: Use `gemini-2.5-flash` for better analysis
 - Timeout issues: Check network connection and API status
 
